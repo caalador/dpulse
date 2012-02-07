@@ -45,7 +45,8 @@ public class DataPulse extends AbstractComponent {
 			requestRepaint();
 			if (oldPoll == pollInterval) {
 				oldPoll = pollInterval;
-				setPollInterval(100);
+				pollInterval = 100;
+				send = true;
 			}
 		}
 		calculateSize();
@@ -66,6 +67,7 @@ public class DataPulse extends AbstractComponent {
 
 	public void setPollInterval(final int pollInterval) {
 		this.pollInterval = pollInterval;
+		oldPoll = pollInterval;
 		send = true;
 	}
 
@@ -126,7 +128,7 @@ public class DataPulse extends AbstractComponent {
 		case HEX:
 			final long height = GeometryUtil.validateAndCorrectHexProportions((int) getWidth(), (int) getHeight());
 
-			pixelWidth = 15 + ((1 + (items / itemsInLine)) * (getWidth() * 2));
+			pixelWidth = 15 + (itemsInLine * (getWidth() * 2));
 			pixelHeight = 15 + (int) (1.6 * height * (1 + (1.0 * items / itemsInLine)));
 			break;
 		case LINK_BOX:
@@ -160,22 +162,27 @@ public class DataPulse extends AbstractComponent {
 			if (connections.size() != runConnectors.size()) {
 				for (final ConnectionVerifier connection : connections) {
 					if (!runConnectors.contains(connection)) {
+						synchronized(threads){
 						if (threads.isEmpty()) {
 							threads.put(connection, new ConnectionTester(connection));
 							threads.get(connection).start();
 							runConnectors.add(connection);
 						}
+						}
 						break;
 					}
 				}
 				if (connections.size() == runConnectors.size()) {
-					setPollInterval(oldPoll);
+					pollInterval = oldPoll;
+					send = true;
 				}
 			} else {
 				for (final ConnectionVerifier connection : connections) {
+					synchronized(threads){
 					if (!threads.containsKey(connection)) {
 						threads.put(connection, new ConnectionTester(connection));
 						threads.get(connection).start();
+					}
 					}
 				}
 			}
@@ -201,7 +208,9 @@ public class DataPulse extends AbstractComponent {
 		@Override
 		public void run() {
 			connection.testConnection();
+			synchronized(threads){
 			threads.remove(connection);
+			}
 		}
 	}
 }
