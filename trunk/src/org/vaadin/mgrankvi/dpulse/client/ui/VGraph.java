@@ -33,15 +33,7 @@ public class VGraph extends Widget implements Paintable {
 
 		setElement(Document.get().createDivElement());
 
-		// This method call of the Paintable interface sets the component
-		// style name in DOM tree
 		setStyleName(CLASSNAME);
-
-		// Tell GWT we are interested in receiving click events
-		// sinkEvents(Event.ONCLICK);
-		// Add a handler for the click events (this is similar to
-		// FocusWidget.addClickHandler())
-		// addDomHandler(this, ClickEvent.getType());
 
 		canvas = Canvas.createIfSupported();
 		if (canvas != null) {
@@ -56,21 +48,15 @@ public class VGraph extends Widget implements Paintable {
 	/**
 	 * Called whenever an update is received from the server
 	 */
-	public void updateFromUIDL(final UIDL uidl, final ApplicationConnection client) {
-		// This call should be made first.
-		// It handles sizes, captions, tooltips, etc. automatically.
+	public void updateFromUIDL(final UIDL uidl,
+			final ApplicationConnection client) {
+
 		if (client.updateComponent(this, uidl, true) || canvas == null) {
-			// If client.updateComponent returns true there has been no changes
-			// and we
-			// do not need to update anything.
 			return;
 		}
 
-		// Save reference to server connection object to be able to send
-		// user interaction later
 		this.client = client;
 
-		// Save the client side identifier (paintable id) for the widget
 		paintableId = uidl.getId();
 
 		final UIDL options = uidl.getChildByTagName(VDataPulse.OPTIONS_UIDL);
@@ -105,17 +91,32 @@ public class VGraph extends Widget implements Paintable {
 		context.closePath();
 		context.stroke();
 
+		context.beginPath();
+		for (int i = 0; i < height; i += height / 10) {
+			context.moveTo(0, i);
+			context.lineTo(5, i);
+		}
+		context.moveTo(0, 0);
+		context.closePath();
+		context.stroke();
+
 		plotDataPoints(context);
 	}
 
 	private void plotDataPoints(final Context2d context) {
-		context.setStrokeStyle("green");
+		context.setFillStyle("black");
+		context.setFont("10px Courier");
+		context.fillText(Integer.toString((int) (maxValue * 1.1)), 5, 12);
 
-		context.beginPath();
-		context.moveTo(0, height);
+		context.setStrokeStyle("green");
 
 		final double xIncrement = (double) width / points.length;
 		final double scale = height / (maxValue * 1.1);
+		final double first = points.length > 0 ? height - (points[0] * scale)
+				: 0.0;
+
+		context.beginPath();
+		context.moveTo(0, first);
 		for (int i = 0; i < points.length; i++) {
 			final double x = i * xIncrement;
 			final double y = height - (points[i] * scale);

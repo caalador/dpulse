@@ -31,17 +31,12 @@ public class InfoWindow extends Window {
 		final HorizontalLayout hl = new HorizontalLayout();
 		hl.setSpacing(true);
 		hl.addComponent(new Label("Ping times:"));
-		final VerticalLayout vl = new VerticalLayout();
-		hl.addComponent(vl);
-		for (final Long time : info.getPingTimes()) {
-			vl.addComponent(new Label(time + "ms"));
-		}
 
-		Graph graph = new Graph();
+		final Graph graph = new Graph();
 		graph.setWidth("250px");
 		graph.setHeight("175px");
-		List<Long> times = info.getPingTimes();
-		Integer[] ints = new Integer[times.size()];
+		final List<Long> times = info.getPingTimes();
+		final Integer[] ints = new Integer[times.size()];
 		for (int i = 0; i < times.size(); i++) {
 			ints[i] = times.get(i).intValue();
 		}

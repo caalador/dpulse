@@ -1,10 +1,13 @@
 package org.vaadin.mgrankvi.dpulse.data;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.vaadin.mgrankvi.dpulse.client.ui.ConnectionState;
 
-public class ConnectionInformation {
+public class ConnectionInformation implements Serializable {
+
+	private static final long serialVersionUID = -2588063490513134364L;
 
 	private Long pingTime;
 
@@ -18,7 +21,7 @@ public class ConnectionInformation {
 		this(15);
 	}
 
-	public ConnectionInformation(int amount) {
+	public ConnectionInformation(final int amount) {
 		pingTimes = new RoundRobin(amount);
 	}
 
