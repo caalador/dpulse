@@ -160,31 +160,16 @@ public class DataPulse extends AbstractComponent {
 
 		if (variables.containsKey("refresh")) {
 			if (connections.size() != runConnectors.size()) {
-				for (final ConnectionVerifier connection : connections) {
-					if (!runConnectors.contains(connection)) {
-						synchronized(threads){
-						if (threads.isEmpty()) {
-							threads.put(connection, new ConnectionTester(connection));
-							threads.get(connection).start();
-							runConnectors.add(connection);
-						}
-						}
-						break;
+				startConnectorsAsSingle();
+			} else {
+				if (pollInterval != oldPoll) {
+					if (!threads.isEmpty()) {
+						return;
 					}
-				}
-				if (connections.size() == runConnectors.size()) {
 					pollInterval = oldPoll;
 					send = true;
 				}
-			} else {
-				for (final ConnectionVerifier connection : connections) {
-					synchronized(threads){
-					if (!threads.containsKey(connection)) {
-						threads.put(connection, new ConnectionTester(connection));
-						threads.get(connection).start();
-					}
-					}
-				}
+				fireAllConnectors();
 			}
 		}
 		if (variables.containsKey(VDataPulse.CLICK_EVENT)) {
@@ -195,6 +180,32 @@ public class DataPulse extends AbstractComponent {
 		}
 
 		requestRepaint();
+	}
+
+	private void startConnectorsAsSingle() {
+		for (final ConnectionVerifier connection : connections) {
+			if (!runConnectors.contains(connection)) {
+				synchronized (threads) {
+					if (threads.isEmpty()) {
+						threads.put(connection, new ConnectionTester(connection));
+						threads.get(connection).start();
+						runConnectors.add(connection);
+					}
+				}
+				break;
+			}
+		}
+	}
+
+	private void fireAllConnectors() {
+		for (final ConnectionVerifier connection : connections) {
+			synchronized (threads) {
+				if (!threads.containsKey(connection)) {
+					threads.put(connection, new ConnectionTester(connection));
+					threads.get(connection).start();
+				}
+			}
+		}
 	}
 
 	private class ConnectionTester extends Thread {
@@ -208,8 +219,8 @@ public class DataPulse extends AbstractComponent {
 		@Override
 		public void run() {
 			connection.testConnection();
-			synchronized(threads){
-			threads.remove(connection);
+			synchronized (threads) {
+				threads.remove(connection);
 			}
 		}
 	}
