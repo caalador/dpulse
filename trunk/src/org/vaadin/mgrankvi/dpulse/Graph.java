@@ -7,6 +7,7 @@ import org.vaadin.mgrankvi.dpulse.client.ui.VDataPulse;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.Label;
 
 @com.vaadin.ui.ClientWidget(org.vaadin.mgrankvi.dpulse.client.ui.VGraph.class)
 public class Graph extends AbstractComponent {
@@ -14,8 +15,14 @@ public class Graph extends AbstractComponent {
 	private static final long serialVersionUID = 5338363670578270509L;
 	private Integer[] ints = new Integer[0];
 
-	public void setInts(Integer[] ints) {
+	private Label info;
+
+	public void setInts(final Integer[] ints) {
 		this.ints = ints;
+	}
+
+	public void setInfoLabel(final Label info) {
+		this.info = info;
 	}
 
 	@Override
@@ -39,7 +46,7 @@ public class Graph extends AbstractComponent {
 
 		target.addAttribute("values", ints);
 		int max = 0;
-		for (Integer i : ints) {
+		for (final Integer i : ints) {
 			if (i > max) {
 				max = i;
 			}
@@ -50,5 +57,11 @@ public class Graph extends AbstractComponent {
 	@Override
 	public void changeVariables(final Object source, final Map<String, Object> variables) {
 		super.changeVariables(source, variables);
+
+		if (variables.containsKey("hover")) {
+			if (info != null) {
+				info.setValue(ints[((Integer) variables.get("hover"))] + " ms");
+			}
+		}
 	}
 }

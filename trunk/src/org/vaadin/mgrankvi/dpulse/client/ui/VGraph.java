@@ -3,6 +3,8 @@ package org.vaadin.mgrankvi.dpulse.client.ui;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
@@ -24,6 +26,7 @@ public class VGraph extends Widget implements Paintable {
 
 	private int width, height, maxValue;
 	private int[] points;
+	private double[] xPoints;
 
 	/**
 	 * The constructor should first call super() to initialize the component and
@@ -35,6 +38,8 @@ public class VGraph extends Widget implements Paintable {
 
 		setStyleName(CLASSNAME);
 
+		sinkEvents(Event.ONMOUSEMOVE);
+
 		canvas = Canvas.createIfSupported();
 		if (canvas != null) {
 			getElement().appendChild(canvas.getElement());
@@ -45,11 +50,45 @@ public class VGraph extends Widget implements Paintable {
 		}
 	}
 
+	private double lastSent = -1;
+
+	@Override
+	public void onBrowserEvent(final Event event) {
+		if (paintableId == null || client == null) {
+			return;
+		}
+
+		switch (DOM.eventGetType(event)) {
+		case Event.ONMOUSEMOVE: {
+			final int mouseX = event.getClientX() - canvas.getAbsoluteLeft();
+			for (int i = 0; i < xPoints.length; i++) {
+				if (mouseX > xPoints[i + 1]) {
+					continue;
+				}
+				if (mouseX - xPoints[i] > xPoints[i + 1] - mouseX) {
+					if (lastSent == i + 1) {
+						break;
+					}
+					client.updateVariable(paintableId, "hover", i + 1, true);
+					lastSent = i + 1;
+				} else {
+					if (lastSent == i) {
+						break;
+					}
+					client.updateVariable(paintableId, "hover", i, true);
+					lastSent = i;
+				}
+				break;
+			}
+		}
+		}
+	}
+
 	/**
 	 * Called whenever an update is received from the server
 	 */
-	public void updateFromUIDL(final UIDL uidl,
-			final ApplicationConnection client) {
+	@Override
+	public void updateFromUIDL(final UIDL uidl, final ApplicationConnection client) {
 
 		if (client.updateComponent(this, uidl, true) || canvas == null) {
 			return;
@@ -70,6 +109,7 @@ public class VGraph extends Widget implements Paintable {
 		canvas.setCoordinateSpaceHeight(height);
 
 		points = uidl.getIntArrayAttribute("values");
+		xPoints = new double[points.length];
 		maxValue = uidl.getIntAttribute("maxValue");
 
 		paint();
@@ -112,8 +152,7 @@ public class VGraph extends Widget implements Paintable {
 
 		final double xIncrement = (double) width / points.length;
 		final double scale = height / (maxValue * 1.1);
-		final double first = points.length > 0 ? height - (points[0] * scale)
-				: 0.0;
+		final double first = points.length > 0 ? height - (points[0] * scale) : 0.0;
 
 		context.beginPath();
 		context.moveTo(0, first);
@@ -122,10 +161,12 @@ public class VGraph extends Widget implements Paintable {
 			final double y = height - (points[i] * scale);
 			VConsole.log("" + y);
 			context.lineTo(x, y);
+			xPoints[i] = x;
 		}
 
 		context.moveTo(width, height);
 		context.closePath();
 		context.stroke();
 	}
+
 }
