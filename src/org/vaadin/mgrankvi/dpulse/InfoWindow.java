@@ -44,6 +44,10 @@ public class InfoWindow extends Window {
 		graph.setInts(ints);
 		hl.addComponent(graph);
 
+		final Label pingInfo = new Label();
+		graph.setInfoLabel(pingInfo);
+		hl.addComponent(pingInfo);
+
 		addComponent(hl);
 	}
 }
