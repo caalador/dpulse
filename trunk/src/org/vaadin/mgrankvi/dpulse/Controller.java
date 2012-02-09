@@ -6,6 +6,7 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.NativeSelect;
+import com.vaadin.ui.TextField;
 
 public class Controller extends HorizontalLayout {
 
@@ -15,6 +16,7 @@ public class Controller extends HorizontalLayout {
 
 	public Controller(final DataPulse connected) {
 		this.connected = connected;
+		setSpacing(true);
 		init();
 	}
 
@@ -31,12 +33,27 @@ public class Controller extends HorizontalLayout {
 		selectBox.setImmediate(true);
 		selectBox.addListener(typeSelect);
 
+		final TextField inLine = new TextField();
+		inLine.setValue(connected.getItemsInLine());
+		inLine.addListener(inLineChange);
+		inLine.setImmediate(true);
+
+		final TextField pollTime = new TextField();
+		pollTime.setValue(connected.getPollInterval());
+		pollTime.addListener(timingChange);
+		pollTime.setImmediate(true);
+
 		addComponent(selectBox);
+		addComponent(inLine);
+		addComponent(pollTime);
+
+		addComponent(new ConnectorController(connected));
 	}
 
 	private final ValueChangeListener typeSelect = new ValueChangeListener() {
 		private static final long serialVersionUID = 6227019473959144398L;
 
+		@Override
 		public void valueChange(final ValueChangeEvent event) {
 			connected.setType((Type) event.getProperty().getValue());
 			switch ((Type) event.getProperty().getValue()) {
@@ -55,4 +72,32 @@ public class Controller extends HorizontalLayout {
 		}
 	};
 
+	private final ValueChangeListener inLineChange = new ValueChangeListener() {
+
+		private static final long serialVersionUID = 9127479775819496933L;
+
+		@Override
+		public void valueChange(final ValueChangeEvent event) {
+			final Object value = event.getProperty().getValue();
+			if (value instanceof String) {
+				final int val = Integer.parseInt((String) value);
+				connected.setItemsInLine(val);
+			}
+		}
+
+	};
+
+	private final ValueChangeListener timingChange = new ValueChangeListener() {
+
+		private static final long serialVersionUID = 9127479775819496933L;
+
+		@Override
+		public void valueChange(final ValueChangeEvent event) {
+			final Object value = event.getProperty().getValue();
+			if (value instanceof String) {
+				final int val = Integer.parseInt((String) value);
+				connected.setPollInterval(val);
+			}
+		}
+	};
 }
