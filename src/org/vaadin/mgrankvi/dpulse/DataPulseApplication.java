@@ -16,22 +16,17 @@ public class DataPulseApplication extends Application {
 		setMainWindow(mainWindow);
 
 		final DataPulse connectionTester = new DataPulse();
-		final Controller controller = new Controller(connectionTester);
-
 		connectionTester.setItemsInLine(7);
 		connectionTester.setPollInterval(5000);
 
+		final Controller controller = new Controller(connectionTester);
+
 		connectionTester.addConnection(new HtmlConnector("http://www.yesasia.com", "Yes asia"));
-		// connectionTester.addConnection(new HtmlConnector("http://www.hs.fi",
-		// "Helsingin sanomat"));
-		// connectionTester.addConnection(new
-		// HtmlConnector("http://www.amazon.co.jp", "Amazon japan"));
-		// connectionTester.addConnection(new
-		// HtmlConnector("http://www.kauppalehti.fi", "Kauppalehti"));
-		// connectionTester.addConnection(new
-		// HtmlConnector("http://docs.oracle.com/", "Java documentation"));
-		// connectionTester.addConnection(new
-		// HtmlConnector("http://www.ebookjapan.jp/", " EBook Japan"));
+		connectionTester.addConnection(new HtmlConnector("http://www.hs.fi", "Helsingin sanomat"));
+		connectionTester.addConnection(new HtmlConnector("http://www.amazon.co.jp", "Amazon japan"));
+		connectionTester.addConnection(new HtmlConnector("http://www.kauppalehti.fi", "Kauppalehti"));
+		connectionTester.addConnection(new HtmlConnector("http://docs.oracle.com/", "Java documentation"));
+		connectionTester.addConnection(new HtmlConnector("http://www.ebookjapan.jp/", " EBook Japan"));
 		// connectionTester.addConnection(new
 		// HtmlConnector("http://localhost:8080/Agent/test/", "Rand result"));
 
