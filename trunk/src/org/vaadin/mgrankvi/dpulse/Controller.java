@@ -1,9 +1,12 @@
 package org.vaadin.mgrankvi.dpulse;
 
 import org.vaadin.mgrankvi.dpulse.client.ui.VDataPulse.Type;
+import org.vaadin.mgrankvi.dpulse.data.connector.HtmlConnector;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.TextField;
@@ -48,12 +51,22 @@ public class Controller extends HorizontalLayout {
 		addComponent(pollTime);
 
 		addComponent(new ConnectorController(connected));
+
+		addComponent(new Button("add 5", new Button.ClickListener() {
+
+			private static final long serialVersionUID = -3431736429301232283L;
+
+			public void buttonClick(final ClickEvent event) {
+				for (int i = 0; i < 5; i++) {
+					connected.addConnection(new HtmlConnector("http://localhost:8080/DPulse/random/", "Random result"));
+				}
+			}
+		}));
 	}
 
 	private final ValueChangeListener typeSelect = new ValueChangeListener() {
 		private static final long serialVersionUID = 6227019473959144398L;
 
-		@Override
 		public void valueChange(final ValueChangeEvent event) {
 			connected.setType((Type) event.getProperty().getValue());
 			switch ((Type) event.getProperty().getValue()) {
@@ -76,7 +89,6 @@ public class Controller extends HorizontalLayout {
 
 		private static final long serialVersionUID = 9127479775819496933L;
 
-		@Override
 		public void valueChange(final ValueChangeEvent event) {
 			final Object value = event.getProperty().getValue();
 			if (value instanceof String) {
@@ -91,7 +103,6 @@ public class Controller extends HorizontalLayout {
 
 		private static final long serialVersionUID = 9127479775819496933L;
 
-		@Override
 		public void valueChange(final ValueChangeEvent event) {
 			final Object value = event.getProperty().getValue();
 			if (value instanceof String) {
