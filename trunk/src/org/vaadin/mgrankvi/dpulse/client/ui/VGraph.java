@@ -27,6 +27,7 @@ public class VGraph extends Widget implements Paintable {
 	private int width, height, maxValue;
 	private int[] points;
 	private double[] xPoints;
+	private double lastSent = -1;
 
 	/**
 	 * The constructor should first call super() to initialize the component and
@@ -50,44 +51,9 @@ public class VGraph extends Widget implements Paintable {
 		}
 	}
 
-	private double lastSent = -1;
-
-	@Override
-	public void onBrowserEvent(final Event event) {
-		if (paintableId == null || client == null) {
-			return;
-		}
-
-		switch (DOM.eventGetType(event)) {
-		case Event.ONMOUSEMOVE: {
-			final int mouseX = event.getClientX() - canvas.getAbsoluteLeft();
-			for (int i = 0; i < xPoints.length; i++) {
-				if (mouseX > xPoints[i + 1]) {
-					continue;
-				}
-				if (mouseX - xPoints[i] > xPoints[i + 1] - mouseX) {
-					if (lastSent == i + 1) {
-						break;
-					}
-					client.updateVariable(paintableId, "hover", i + 1, true);
-					lastSent = i + 1;
-				} else {
-					if (lastSent == i) {
-						break;
-					}
-					client.updateVariable(paintableId, "hover", i, true);
-					lastSent = i;
-				}
-				break;
-			}
-		}
-		}
-	}
-
 	/**
 	 * Called whenever an update is received from the server
 	 */
-	@Override
 	public void updateFromUIDL(final UIDL uidl, final ApplicationConnection client) {
 
 		if (client.updateComponent(this, uidl, true) || canvas == null) {
@@ -113,6 +79,62 @@ public class VGraph extends Widget implements Paintable {
 		maxValue = uidl.getIntAttribute("maxValue");
 
 		paint();
+	}
+
+	@Override
+	public void onBrowserEvent(final Event event) {
+		if (paintableId == null || client == null) {
+			return;
+		}
+
+		switch (DOM.eventGetType(event)) {
+		case Event.ONMOUSEMOVE: {
+			final int mouseX = event.getClientX() - canvas.getAbsoluteLeft();
+			for (int i = 0; i < xPoints.length; i++) {
+				if (mouseX > xPoints[i + 1]) {
+					continue;
+				}
+				if (mouseX - xPoints[i] > xPoints[i + 1] - mouseX) {
+					if (lastSent == i + 1) {
+						break;
+					}
+					repaintAndAddPointMarker(i + 1);
+					client.updateVariable(paintableId, "hover", i + 1, true);
+					lastSent = i + 1;
+				} else {
+					if (lastSent == i) {
+						break;
+					}
+					repaintAndAddPointMarker(i);
+					client.updateVariable(paintableId, "hover", i, true);
+					lastSent = i;
+				}
+				break;
+			}
+		}
+		}
+	}
+
+	private void repaintAndAddPointMarker(final int i) {
+		clearGraph();
+		paint();
+		markPointInGraph(i);
+	}
+
+	private void clearGraph() {
+		canvas.getContext2d().clearRect(0.0, 0.0, canvas.getCoordinateSpaceWidth(), canvas.getCoordinateSpaceWidth());
+	}
+
+	private void markPointInGraph(final int position) {
+		final Context2d context = canvas.getContext2d();
+
+		final double scale = height / (maxValue * 1.1);
+
+		context.setFillStyle("green");
+		context.beginPath();
+		context.fillRect(xPoints[position] - 2, height - (points[position] * scale) - 2, 4, 4);
+		context.closePath();
+		context.fill();
 	}
 
 	private void paint() {
