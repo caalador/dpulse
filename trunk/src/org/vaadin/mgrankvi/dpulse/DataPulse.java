@@ -57,6 +57,13 @@ public class DataPulse extends AbstractComponent {
 		runConnectors.remove(connection);
 	}
 
+	public void removeAllConnections() {
+		final List<ConnectionVerifier> clone = new LinkedList<ConnectionVerifier>(connections);
+		for (final ConnectionVerifier connection : clone) {
+			removeConnection(connection);
+		}
+	}
+
 	public void setType(final VDataPulse.Type type) {
 		this.type = type;
 	}
@@ -77,6 +84,7 @@ public class DataPulse extends AbstractComponent {
 
 	public void setItemsInLine(final int itemsInLine) {
 		this.itemsInLine = itemsInLine;
+		calculateSize();
 	}
 
 	@Override
