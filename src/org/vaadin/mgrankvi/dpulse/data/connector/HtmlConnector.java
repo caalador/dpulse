@@ -46,7 +46,9 @@ public class HtmlConnector implements ConnectionVerifier {
 					exception = "Server returned response code " + urlConn.getResponseCode();
 				}
 			} finally {
-				urlConn.disconnect();
+				if (urlConn != null) {
+					urlConn.disconnect();
+				}
 				time = System.currentTimeMillis() - start;
 			}
 		} catch (final SocketTimeoutException ste) {
