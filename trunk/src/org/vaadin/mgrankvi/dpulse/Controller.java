@@ -19,6 +19,7 @@ public class Controller extends HorizontalLayout {
 
 	private final DataPulse connected;
 	private final ConnectorController connectorType = new ConnectorController();
+	private TextField target;
 
 	public Controller(final DataPulse connected) {
 		this.connected = connected;
@@ -54,6 +55,28 @@ public class Controller extends HorizontalLayout {
 		addComponent(pollTime);
 
 		addComponent(connectorType);
+		target = new TextField("Target url");
+		addComponent(target);
+
+		addComponent(new Button("add 1", new Button.ClickListener() {
+
+			private static final long serialVersionUID = -3431736429301232283L;
+
+			public void buttonClick(final ClickEvent event) {
+				addConnector(1);
+			}
+		}));
+
+		addComponent(new Button("add 3", new Button.ClickListener() {
+
+			private static final long serialVersionUID = -3431736429301232283L;
+
+			public void buttonClick(final ClickEvent event) {
+				for (int i = 0; i < 3; i++) {
+					addConnector(i);
+				}
+			}
+		}));
 
 		addComponent(new Button("add 5", new Button.ClickListener() {
 
@@ -61,22 +84,36 @@ public class Controller extends HorizontalLayout {
 
 			public void buttonClick(final ClickEvent event) {
 				for (int i = 0; i < 5; i++) {
-					switch (connectorType.getType()) {
-					case ECHO:
-						connected.addConnection(new EchoConnector("localhost", "Random result set N-" + i));
-						break;
-					case HTML:
-						connected.addConnection(new HtmlConnector("http://localhost:9080/DPulse/random/", "Random result set N-" + i));
-						break;
-					case REACHABLE:
-						connected.addConnection(new IsReachableConnector("localhost", "Random result set N-" + i));
-						break;
-					default:
-						connected.addConnection(new HtmlConnector("http://localhost:9080/DPulse/random/", "Random result set N-" + i));
-					}
+					addConnector(i);
 				}
 			}
 		}));
+
+		addComponent(new Button("Clear connectors", new Button.ClickListener() {
+
+			private static final long serialVersionUID = -3431736429301232283L;
+
+			public void buttonClick(final ClickEvent event) {
+				connected.removeAllConnections();
+				connected.requestRepaint();
+			}
+		}));
+	}
+
+	private void addConnector(final int i) {
+		switch (connectorType.getType()) {
+		case ECHO:
+			connected.addConnection(new EchoConnector((String) target.getValue(), "Random result set N-" + i));
+			break;
+		case HTML:
+			connected.addConnection(new HtmlConnector((String) target.getValue(), "Random result set N-" + i));
+			break;
+		case REACHABLE:
+			connected.addConnection(new IsReachableConnector((String) target.getValue(), "Random result set N-" + i));
+			break;
+		default:
+			connected.addConnection(new HtmlConnector((String) target.getValue(), "Random result set N-" + i));
+		}
 	}
 
 	private final ValueChangeListener typeSelect = new ValueChangeListener() {
