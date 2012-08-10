@@ -1,7 +1,5 @@
 package org.vaadin.mgrankvi.dpulse;
 
-import org.vaadin.mgrankvi.dpulse.data.connector.HtmlConnector;
-
 import com.vaadin.Application;
 import com.vaadin.ui.Window;
 
@@ -11,14 +9,13 @@ public class DataPulseApplication extends Application {
 
 	@Override
 	public void init() {
-		
 
 		final Window mainWindow = new Window("Connected");
 		setMainWindow(mainWindow);
 
 		final DataPulse connectionTester = new DataPulse();
 		connectionTester.setItemsInLine(7);
-		connectionTester.setPollInterval(5000);
+		connectionTester.setPollInterval(20000);
 
 		final Controller controller = new Controller(connectionTester);
 
@@ -35,15 +32,32 @@ public class DataPulseApplication extends Application {
 		// connectionTester.addConnection(new
 		// HtmlConnector("http://www.ebookjapan.jp/", " EBook Japan"));
 
-		connectionTester.addConnection(new HtmlConnector("http://localhost:8080/DPulse/random/", "Random result"));
-		connectionTester.addConnection(new HtmlConnector("http://localhost:8080/DPulse/random/", "Random result"));
-		connectionTester.addConnection(new HtmlConnector("http://localhost:8080/DPulse/random/", "Random result"));
-		connectionTester.addConnection(new HtmlConnector("http://localhost:8080/DPulse/random/", "Random result"));
-		connectionTester.addConnection(new HtmlConnector("http://localhost:8080/DPulse/random/", "Random result"));
-		connectionTester.addConnection(new HtmlConnector("http://localhost:8080/DPulse/random/", "Random result"));
-		connectionTester.addConnection(new HtmlConnector("http://localhost:8080/DPulse/random/", "Random result"));
-		connectionTester.addConnection(new HtmlConnector("http://localhost:8080/DPulse/random/", "Random result"));
-		connectionTester.addConnection(new HtmlConnector("http://localhost:8080/DPulse/random/", "Random result"));
+		// connectionTester.addConnection(new
+		// HtmlConnector("http://localhost/DPulse/random/", "Random result 1"));
+		// connectionTester.addConnection(new
+		// HtmlConnector("http://mikael2.virtuallypreinstalled.com/DPulse/random/",
+		// "Random result 2"));
+		// connectionTester.addConnection(new
+		// HtmlConnector("http://mikael2.virtuallypreinstalled.com/DPulse/random/",
+		// "Random result 3"));
+		// connectionTester.addConnection(new
+		// HtmlConnector("http://mikael2.virtuallypreinstalled.com/DPulse/random/",
+		// "Random result 4"));
+		// connectionTester.addConnection(new
+		// HtmlConnector("http://mikael2.virtuallypreinstalled.com/DPulse/random/",
+		// "Random result 5"));
+		// connectionTester.addConnection(new
+		// HtmlConnector("http://mikael2.virtuallypreinstalled.com/DPulse/random/",
+		// "Random result 6"));
+		// connectionTester.addConnection(new
+		// HtmlConnector("http://mikael2.virtuallypreinstalled.com/DPulse/random/",
+		// "Random result 7"));
+		// connectionTester.addConnection(new
+		// HtmlConnector("http://mikael2.virtuallypreinstalled.com/DPulse/random/",
+		// "Random result 8"));
+		// connectionTester.addConnection(new
+		// HtmlConnector("http://mikael2.virtuallypreinstalled.com/DPulse/random/",
+		// "Random result 9"));
 
 		mainWindow.addComponent(controller);
 		mainWindow.addComponent(connectionTester);

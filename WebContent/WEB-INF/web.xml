@@ -22,6 +22,9 @@
 			<param-name>widgetset</param-name>
 			<param-value>org.vaadin.mgrankvi.dpulse.DataPulseWidgetset</param-value>
 		</init-param>
+		<session-config>
+			<session-timeout>30</session-timeout>
+		</session-config>
 	</servlet>
 	<servlet>
 		<servlet-name>random</servlet-name>
