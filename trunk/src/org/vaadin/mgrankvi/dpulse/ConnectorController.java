@@ -7,18 +7,31 @@ public class ConnectorController extends HorizontalLayout {
 
 	private static final long serialVersionUID = -2094358616918678103L;
 
-	DataPulse dpulse;
+	enum Type {
+		ECHO, HTML, REACHABLE
+	}
 
-	public ConnectorController(final DataPulse connected) {
-		dpulse = connected;
-		final NativeSelect types = new NativeSelect();
+	final NativeSelect types;
 
-		types.addItem("ECHO Connector");
-		types.addItem("HTML Connector");
-		types.addItem("Is Reachable Connector");
+	public ConnectorController() {
+		types = new NativeSelect("Connector type");
+
+		types.addItem(Type.HTML);
+		types.addItem(Type.ECHO);
+		types.addItem(Type.REACHABLE);
+
+		types.setItemCaption(Type.HTML, "HTML Connector");
+		types.setItemCaption(Type.ECHO, "ECHO Connector");
+		types.setItemCaption(Type.REACHABLE, "Is Reachable Connector");
+
+		types.setNullSelectionAllowed(false);
+		types.select(Type.HTML);
 
 		addComponent(types);
 
 	}
 
+	public Type getType() {
+		return (Type) types.getValue();
+	}
 }

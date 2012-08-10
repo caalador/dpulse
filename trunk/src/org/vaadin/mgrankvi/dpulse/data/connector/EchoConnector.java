@@ -49,7 +49,9 @@ public class EchoConnector implements ConnectionVerifier {
 					state = ConnectionState.DOWN;
 				}
 			} finally {
-				t.close();
+				if (t != null) {
+					t.close();
+				}
 				time = System.currentTimeMillis() - start;
 			}
 		} catch (final IOException e) {

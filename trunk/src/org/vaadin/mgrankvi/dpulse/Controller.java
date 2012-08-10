@@ -1,7 +1,9 @@
 package org.vaadin.mgrankvi.dpulse;
 
 import org.vaadin.mgrankvi.dpulse.client.ui.VDataPulse.Type;
+import org.vaadin.mgrankvi.dpulse.data.connector.EchoConnector;
 import org.vaadin.mgrankvi.dpulse.data.connector.HtmlConnector;
+import org.vaadin.mgrankvi.dpulse.data.connector.IsReachableConnector;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -16,6 +18,7 @@ public class Controller extends HorizontalLayout {
 	private static final long serialVersionUID = -2445848825755916027L;
 
 	private final DataPulse connected;
+	private final ConnectorController connectorType = new ConnectorController();
 
 	public Controller(final DataPulse connected) {
 		this.connected = connected;
@@ -24,7 +27,7 @@ public class Controller extends HorizontalLayout {
 	}
 
 	private void init() {
-		final NativeSelect selectBox = new NativeSelect();
+		final NativeSelect selectBox = new NativeSelect("Visualization type");
 
 		selectBox.setNullSelectionAllowed(false);
 
@@ -36,12 +39,12 @@ public class Controller extends HorizontalLayout {
 		selectBox.setImmediate(true);
 		selectBox.addListener(typeSelect);
 
-		final TextField inLine = new TextField();
+		final TextField inLine = new TextField("Items in line");
 		inLine.setValue(connected.getItemsInLine());
 		inLine.addListener(inLineChange);
 		inLine.setImmediate(true);
 
-		final TextField pollTime = new TextField();
+		final TextField pollTime = new TextField("Polling time in ms");
 		pollTime.setValue(connected.getPollInterval());
 		pollTime.addListener(timingChange);
 		pollTime.setImmediate(true);
@@ -50,7 +53,7 @@ public class Controller extends HorizontalLayout {
 		addComponent(inLine);
 		addComponent(pollTime);
 
-		addComponent(new ConnectorController(connected));
+		addComponent(connectorType);
 
 		addComponent(new Button("add 5", new Button.ClickListener() {
 
@@ -58,7 +61,19 @@ public class Controller extends HorizontalLayout {
 
 			public void buttonClick(final ClickEvent event) {
 				for (int i = 0; i < 5; i++) {
-					connected.addConnection(new HtmlConnector("http://localhost:8080/DPulse/random/", "Random result"));
+					switch (connectorType.getType()) {
+					case ECHO:
+						connected.addConnection(new EchoConnector("localhost", "Random result set N-" + i));
+						break;
+					case HTML:
+						connected.addConnection(new HtmlConnector("http://localhost:9080/DPulse/random/", "Random result set N-" + i));
+						break;
+					case REACHABLE:
+						connected.addConnection(new IsReachableConnector("localhost", "Random result set N-" + i));
+						break;
+					default:
+						connected.addConnection(new HtmlConnector("http://localhost:9080/DPulse/random/", "Random result set N-" + i));
+					}
 				}
 			}
 		}));
