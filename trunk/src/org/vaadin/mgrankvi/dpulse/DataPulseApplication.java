@@ -1,6 +1,7 @@
 package org.vaadin.mgrankvi.dpulse;
 
 import com.vaadin.Application;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Window;
 
 public class DataPulseApplication extends Application {
@@ -61,5 +62,18 @@ public class DataPulseApplication extends Application {
 
 		mainWindow.addComponent(controller);
 		mainWindow.addComponent(connectionTester);
+		mainWindow.addComponent(getExplanation());
+	}
+
+	private Label getExplanation() {
+		final Label text = new Label("", Label.CONTENT_XHTML);
+
+		text.setValue("<b>HTML Connector</b> uses target urls of type <b><i>http://mikael2.virtuallypreinstalled.com/</i></b><br/>"
+				+ "<b>ECHO connector</b> uses <b><i>mikael2.virtuallypreinstalled.com</i></b><br/>"
+				+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+				+ "<b>Note!</b> most servers don't accept connections to the echo port. (Error in echo to server.Connection refused)<br/>"
+				+ "<b>Is Reachable Connector</b> also uses <b><i>mikael2.virtuallypreinstalled.com</i></b> and has a better chance of not being blocked.");
+
+		return text;
 	}
 }
