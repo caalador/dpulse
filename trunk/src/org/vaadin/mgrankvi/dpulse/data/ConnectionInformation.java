@@ -5,6 +5,12 @@ import java.util.List;
 
 import org.vaadin.mgrankvi.dpulse.client.ui.ConnectionState;
 
+/**
+ * Class that holds needed and interesting information for DataPulse.
+ * 
+ * @author Mikael
+ * 
+ */
 public class ConnectionInformation implements Serializable {
 
 	private static final long serialVersionUID = -2588063490513134364L;
@@ -17,18 +23,37 @@ public class ConnectionInformation implements Serializable {
 
 	private final RoundRobin pingTimes;
 
+	/**
+	 * Initializes a RoundRobin for 15 ping times
+	 */
 	public ConnectionInformation() {
 		this(15);
 	}
 
+	/**
+	 * Creates the ping times RoundRobin
+	 * 
+	 * @param amount
+	 *            Amount of ping times to save
+	 */
 	public ConnectionInformation(final int amount) {
 		pingTimes = new RoundRobin(amount);
 	}
 
+	/**
+	 * Get the latest ping time
+	 * 
+	 * @return
+	 */
 	public Long getPingTime() {
 		return pingTime;
 	}
 
+	/**
+	 * Sets the latest ping time and adds it to the RoundRobin.
+	 * 
+	 * @param pingTime
+	 */
 	public void setPingTime(final Long pingTime) {
 		this.pingTime = pingTime;
 		if (pingTime != null) {
@@ -68,6 +93,11 @@ public class ConnectionInformation implements Serializable {
 		this.description = description;
 	}
 
+	/**
+	 * Get all ping times stored in the round robin.
+	 * 
+	 * @return
+	 */
 	public List<Long> getPingTimes() {
 		return pingTimes.getValues();
 	}
