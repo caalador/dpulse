@@ -137,11 +137,11 @@ public class DataPulse extends AbstractComponent {
 			final long height = GeometryUtil.validateAndCorrectHexProportions((int) getWidth(), (int) getHeight());
 
 			pixelWidth = 15 + (itemsInLine * (getWidth() * 2));
-			pixelHeight = 15 + (int) (1.6 * height * (1 + (1.0 * items / itemsInLine)));
+			pixelHeight = 15 + (int) (1.15 * height * (1 + (1.0 * items / itemsInLine)));
 			break;
 		case LINK_BOX:
 			pixelWidth = 15 + (int) (1.3 * (1 + (1.0 * items / itemsInLine)) * getWidth());
-			pixelHeight = 15 + (int) (2.5 * getHeight() * itemsInLine);
+			pixelHeight = 15 + (int) (2 * getHeight() * itemsInLine);
 			break;
 		case TILE:
 			pixelWidth = 15 + (int) (items * (getWidth() * 1.25));
