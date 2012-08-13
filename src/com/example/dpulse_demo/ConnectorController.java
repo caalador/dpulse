@@ -1,4 +1,4 @@
-package org.vaadin.mgrankvi.dpulse;
+package com.example.dpulse_demo;
 
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.NativeSelect;

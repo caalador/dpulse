@@ -1,5 +1,6 @@
-package org.vaadin.mgrankvi.dpulse;
+package com.example.dpulse_demo;
 
+import org.vaadin.mgrankvi.dpulse.DataPulse;
 import org.vaadin.mgrankvi.dpulse.client.ui.VDataPulse.Type;
 import org.vaadin.mgrankvi.dpulse.data.connector.EchoConnector;
 import org.vaadin.mgrankvi.dpulse.data.connector.HtmlConnector;
