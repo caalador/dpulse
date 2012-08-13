@@ -39,6 +39,11 @@ public class DataPulse extends AbstractComponent {
 		setHeight("43px");
 	}
 
+	/**
+	 * Add new connection to be polled and verified.
+	 * 
+	 * @param connection
+	 */
 	public void addConnection(final ConnectionVerifier connection) {
 		if (connection != null && !connections.contains(connection)) {
 			connections.add(connection);
@@ -52,11 +57,19 @@ public class DataPulse extends AbstractComponent {
 		calculateSize();
 	}
 
+	/**
+	 * Remove connection from polling.
+	 * 
+	 * @param connection
+	 */
 	public void removeConnection(final ConnectionVerifier connection) {
 		connections.remove(connection);
 		runConnectors.remove(connection);
 	}
 
+	/**
+	 * Clear all verification connections.
+	 */
 	public void removeAllConnections() {
 		final List<ConnectionVerifier> clone = new LinkedList<ConnectionVerifier>(connections);
 		for (final ConnectionVerifier connection : clone) {
@@ -64,6 +77,11 @@ public class DataPulse extends AbstractComponent {
 		}
 	}
 
+	/**
+	 * Set visualization type.
+	 * 
+	 * @param type
+	 */
 	public void setType(final VDataPulse.Type type) {
 		this.type = type;
 	}
@@ -72,6 +90,11 @@ public class DataPulse extends AbstractComponent {
 		return pollInterval;
 	}
 
+	/**
+	 * Set polling interval in ms.
+	 * 
+	 * @param pollInterval
+	 */
 	public void setPollInterval(final int pollInterval) {
 		this.pollInterval = pollInterval;
 		oldPoll = pollInterval;
@@ -82,6 +105,11 @@ public class DataPulse extends AbstractComponent {
 		return itemsInLine;
 	}
 
+	/**
+	 * Set amount of components one full line should contain
+	 * 
+	 * @param itemsInLine
+	 */
 	public void setItemsInLine(final int itemsInLine) {
 		this.itemsInLine = itemsInLine;
 		calculateSize();
