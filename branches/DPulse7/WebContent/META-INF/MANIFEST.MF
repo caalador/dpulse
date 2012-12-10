@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Implementation-Title: DPulse
+Implementation-Version: 1.3.1
+Vaadin-Package-Version: 1
+Vaadin-Widgetsets: org.vaadin.mgrankvi.dpulse.DataPulseWidgetset
+Class-Path: 
+
