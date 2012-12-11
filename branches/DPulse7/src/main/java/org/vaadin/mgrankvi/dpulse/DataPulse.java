@@ -8,7 +8,7 @@ import java.util.Map;
 import org.vaadin.mgrankvi.dpulse.client.pulse.ConnectorState;
 import org.vaadin.mgrankvi.dpulse.client.pulse.DataPulseServerRpc;
 import org.vaadin.mgrankvi.dpulse.client.pulse.DataPulseState;
-import org.vaadin.mgrankvi.dpulse.client.pulse.VDataPulse;
+import org.vaadin.mgrankvi.dpulse.client.pulse.CDataPulse;
 import org.vaadin.mgrankvi.dpulse.client.ui.geometry.GeometryUtil;
 import org.vaadin.mgrankvi.dpulse.data.ConnectionInformation;
 import org.vaadin.mgrankvi.dpulse.interfaces.ConnectionVerifier;
@@ -57,7 +57,7 @@ public class DataPulse extends AbstractComponent {
 		}
 	};
 
-	private VDataPulse.Type type = VDataPulse.Type.HEX;
+	private CDataPulse.Type type = CDataPulse.Type.HEX;
 	private int pollInterval = 15000;
 	private int oldPoll = 15000;
 	private int itemsInLine = 4;
@@ -129,7 +129,7 @@ public class DataPulse extends AbstractComponent {
 	 * 
 	 * @param type
 	 */
-	public void setType(final VDataPulse.Type type) {
+	public void setType(final CDataPulse.Type type) {
 		this.type = type;
 		getState().type = type;
 	}
