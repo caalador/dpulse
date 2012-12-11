@@ -1,4 +1,6 @@
-package org.vaadin.mgrankvi.dpulse;
+package com.example.dpulse_demo;
+
+import org.vaadin.mgrankvi.dpulse.DataPulse;
 
 import com.vaadin.Application;
 import com.vaadin.ui.Label;
@@ -16,7 +18,7 @@ public class DataPulseApplication extends Application {
 
 		final DataPulse connectionTester = new DataPulse();
 		connectionTester.setItemsInLine(7);
-		connectionTester.setPollInterval(20000);
+		connectionTester.setPollInterval(5000);
 
 		final Controller controller = new Controller(connectionTester);
 
