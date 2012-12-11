@@ -1,6 +1,6 @@
 package org.vaadin.mgrankvi.dpulse;
 
-import org.vaadin.mgrankvi.dpulse.client.pulse.VDataPulse.Type;
+import org.vaadin.mgrankvi.dpulse.client.pulse.CDataPulse.Type;
 import org.vaadin.mgrankvi.dpulse.data.connector.EchoConnector;
 import org.vaadin.mgrankvi.dpulse.data.connector.HtmlConnector;
 import org.vaadin.mgrankvi.dpulse.data.connector.IsReachableConnector;

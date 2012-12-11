@@ -27,12 +27,12 @@ public class DataPulseConnector extends AbstractComponentConnector implements Da
 
 	@Override
 	protected Widget createWidget() {
-		return GWT.create(VDataPulse.class);
+		return GWT.create(CDataPulse.class);
 	}
 
 	@Override
-	public VDataPulse getWidget() {
-		return (VDataPulse) super.getWidget();
+	public CDataPulse getWidget() {
+		return (CDataPulse) super.getWidget();
 	};
 
 	@Override

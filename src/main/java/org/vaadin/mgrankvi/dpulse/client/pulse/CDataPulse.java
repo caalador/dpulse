@@ -25,7 +25,7 @@ import com.vaadin.client.Util;
  * Client side widget which communicates with the server. Messages from the
  * server are shown as HTML and mouse clicks are sent to the server.
  */
-public class VDataPulse extends Widget implements ClickHandler {
+public class CDataPulse extends Widget implements ClickHandler {
 
 	public static final String POLL_INTERVAL = "interval";
 	public static final String OPTIONS_UIDL = "options";
@@ -78,7 +78,7 @@ public class VDataPulse extends Widget implements ClickHandler {
 	 * The constructor should first call super() to initialize the component and
 	 * then handle any initialization relevant to Vaadin.
 	 */
-	public VDataPulse() {
+	public CDataPulse() {
 
 		setElement(Document.get().createDivElement());
 
@@ -363,7 +363,7 @@ public class VDataPulse extends Widget implements ClickHandler {
 
 		@Override
 		public void run() {
-			if (Util.isAttachedAndDisplayed(VDataPulse.this)) {
+			if (Util.isAttachedAndDisplayed(CDataPulse.this)) {
 				fireEvent(new DataEvent(DataEvent.EventType.REFRESH, 0));
 				// client.sendPendingVariableChanges();
 				// client.updateVariable(paintableId, "refresh", "update",
