@@ -373,7 +373,7 @@ public class VDataPulse extends Widget implements ClickHandler {
 
 	}
 
-	public HandlerRegistration addHoverEventHandler(final DataEventHandler dataEventHandler) {
+	public HandlerRegistration addDataEventHandler(final DataEventHandler dataEventHandler) {
 		return addHandler(dataEventHandler, DataEvent.getType());
 	}
 

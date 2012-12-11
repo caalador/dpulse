@@ -22,7 +22,7 @@ public class DataPulseConnector extends AbstractComponentConnector implements Da
 	public void init() {
 		super.init();
 
-		handlerRegistration.add(getWidget().addHoverEventHandler(this));
+		handlerRegistration.add(getWidget().addDataEventHandler(this));
 	}
 
 	@Override
