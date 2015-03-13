@@ -1,0 +1,1 @@
+Add-on component for fast visual feedback of connection status to defined services from the application server.
